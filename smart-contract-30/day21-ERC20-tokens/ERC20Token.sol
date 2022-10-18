@@ -1,4 +1,4 @@
-pragma solidity ^0.5.6;
+pragma solidity ^0.8.0;
 
 interface ERC20Interface {
     function transfer(address to, uint tokens) public returns (bool success);
@@ -12,7 +12,7 @@ interface ERC20Interface {
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
 }
 
-contract ERC20Token is ERC20Interface {
+contract DayByDay ERC20Token is ERC20Interface {
     string public name;
     string public symbol;
     uint8 public decimals;
@@ -26,10 +26,10 @@ contract ERC20Token is ERC20Interface {
         uint8 _decimals,
         uint _totalSupply)
         public {
-            name = _name;
-            symbol = _symbol;
-            decimals = _decimals;
-            totalSupply = _totalSupply;
+            name = "DayByDay";
+            symbol = "DBD;
+            decimals = 9;
+            totalSupply = 800000000;
             balances[msg.sender] = _totalSupply;
         }
         
@@ -65,5 +65,15 @@ contract ERC20Token is ERC20Interface {
     function balanceOf(address owner) public view returns(uint) {
         return balances[owner];
     }
-    
+
+  /**
+   * @dev Destroys `amount` tokens from `account`.`amount` is then deducted
+   * from the caller's allowance.
+   *
+   * See {_burn} and {_approve}.
+   */
+  function _burnFrom(address account, uint256 amount) internal {
+    _burn(account, amount);
+    _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "BEP20: burn amount exceeds allowance"));
+  }
 }
